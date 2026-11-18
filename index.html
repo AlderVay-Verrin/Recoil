@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#07111f" />
+  <title>Recoil Zero-G</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root { color-scheme: dark; --cyan:#64eaff; --green:#66efb2; --red:#ff657d; }
+    html,body { width:100%; height:100%; margin:0; overflow:hidden; background:#050913; color:#edf7ff; font:16px system-ui,sans-serif; }
+    canvas { display:block; width:100%; height:100%; }
+    button { border:1px solid #5eabc0; background:#102438; color:#effcff; padding:11px 16px; font:700 13px system-ui,sans-serif; letter-spacing:.08em; cursor:pointer; }
+    button:hover { background:#194258; border-color:var(--cyan); }
+    #menu { position:fixed; inset:0; z-index:10; display:grid; place-items:center; padding:20px; background:radial-gradient(circle at 50% 40%,#17344a 0,#08111d 60%,#03070d 100%); }
+    #menu.hidden { display:none; }
+    .panel { width:min(820px,100%); max-height:calc(100vh - 40px); overflow:auto; padding:38px; border:1px solid #69ddec55; background:#09131feb; box-shadow:0 25px 100px #000b; }
+    h1 { margin:0 0 8px; font-size:clamp(42px,9vw,86px); line-height:.92; letter-spacing:.08em; text-transform:uppercase; }
+    h2 { margin:0 0 14px; }
+    .eyebrow { color:var(--cyan); letter-spacing:.24em; font-size:12px; font-weight:800; }
+    .lead { color:#b3c7d6; max-width:590px; line-height:1.65; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:24px 0; }
+    .mode { min-height:118px; text-align:left; }
+    .mode strong { display:block; color:var(--cyan); margin-bottom:7px; }
+    .mode span { display:block; color:#adc0ce; font-weight:400; letter-spacing:0; }
+    .row { display:flex; flex-wrap:wrap; gap:10px; }
+    .manual { margin-top:20px; border-top:1px solid #ffffff18; padding-top:16px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 24px; color:#b6c7d4; font-size:13px; }
+    kbd { display:inline-block; min-width:28px; text-align:center; color:#effcff; border:1px solid #50758a; border-radius:3px; background:#101d29; padding:1px 6px; margin-right:7px; }
+    #hud { display:none; position:fixed; left:16px; top:14px; z-index:5; pointer-events:none; text-shadow:0 2px 8px #000; line-height:1.7; }
+    body.playing #hud { display:block; }
+    #crosshair { display:none; position:fixed; z-index:5; left:50%; top:50%; width:18px; height:18px; transform:translate(-50%,-50%); border:1px solid #9df3ff; border-radius:50%; pointer-events:none; box-shadow:0 0 8px #46dfffa8; }
+    #crosshair:before,#crosshair:after { content:""; position:absolute; background:#9df3ff; }
+    #crosshair:before { width:1px; height:26px; left:8px; top:-5px; }
+    #crosshair:after { height:1px; width:26px; left:-5px; top:8px; }
+    body.playing #crosshair { display:block; }
+    .meter { display:inline-block; vertical-align:middle; width:145px; height:8px; margin:0 6px; overflow:hidden; border-radius:8px; background:#263949; }
+    .meter i { display:block; width:100%; height:100%; background:var(--green); }
+    #toast { position:fixed; z-index:7; top:20%; left:50%; transform:translateX(-50%); opacity:0; transition:.18s; pointer-events:none; font-weight:800; letter-spacing:.16em; text-shadow:0 2px 12px #000; }
+    #toast.show { opacity:1; }
+    @media(max-width:620px){ .panel{padding:22px}.grid{grid-template-columns:1fr}.manual{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <canvas id="game" aria-label="Recoil Zero-G arena"></canvas>
+  <div id="hud"></div>
+  <div id="crosshair"></div>
+  <div id="toast"></div>
+  <div id="menu">
+    <div class="panel">
+      <div class="eyebrow">ORIGINAL ZERO-G ARENA SHOOTER</div>
+      <h1>Recoil</h1>
+      <p class="lead">Fight in open space with no up or down. Drift, dash, grab drifting cover, and use weapon recoil to push yourself through the arena.</p>
+      <div class="grid">
+        <button class="mode" id="tdm"><strong>TEAM DEATHMATCH</strong><span>Clear the enemy pilots. First team to 15 eliminations wins.</span></button>
+        <button class="mode" id="survival"><strong>CAMPAIGN SURVIVAL</strong><span>Survive escalating waves of drones and heavy attackers.</span></button>
+      </div>
+      <button id="manualToggle">HOW TO PLAY</button>
+      <div class="manual" id="manual" hidden>
+        <div><kbd>WASD</kbd> Thrust forward / back / sides</div>
+        <div><kbd>Mouse</kbd> Look around</div>
+        <div><kbd>Space / C</kbd> Thrust up / down</div>
+        <div><kbd>Q / E</kbd> Roll left / right</div>
+        <div><kbd>Click</kbd> Fire</div>
+        <div><kbd>RMB</kbd> Aim and stabilize</div>
+        <div><kbd>Shift</kbd> Directional dash</div>
+        <div><kbd>F</kbd> Magnetic grab nearby cover</div>
+        <div><kbd>V</kbd> Push nearby shots and enemies away</div>
+        <div><kbd>R</kbd> Reload</div>
+        <div><kbd>1–6</kbd> Switch weapons</div>
+        <div><kbd>Tab / Esc</kbd> Pause or release mouse</div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
